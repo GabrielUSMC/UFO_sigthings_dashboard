@@ -26,26 +26,30 @@ function runEnter(){
 
     // Get the value property of the input element
     var inputValue = d3.select(".form-control").property("value");
-    var inputArray = inputValue.split(" ");
-    var filteredData = td.filter(s => true);
-    // console.log(inputArray);
-
-    if (dateCheck){
-        filteredData = filteredData.filter(sighting => inputArray.includes(sighting.datetime));
+    if (inputValue) {
+        var inputArray = inputValue.split(" ");
+        var filteredData = td.filter(s => true);
+        if (dateCheck){
+            filteredData = filteredData.filter(sighting => inputArray.includes(sighting.datetime));
+        }
+        if (cityCheck){
+            filteredData = filteredData.filter(sighting => inputArray.includes(sighting.city));
+        }
+        if (stateCheck){
+            filteredData = filteredData.filter(sighting => inputArray.includes(sighting.state));
+        }
+        if (countryCheck){
+            filteredData = filteredData.filter(sighting => inputArray.includes(sighting.country));
+        }
+        if (shapeCheck){
+            filteredData = filteredData.filter(sighting => inputArray.includes(sighting.shape));
+        }
     }
-    if (cityCheck){
-        filteredData = filteredData.filter(sighting => inputArray.includes(sighting.city));
-    }
-    if (stateCheck){
-        filteredData = filteredData.filter(sighting => inputArray.includes(sighting.state));
-    }
-    if (countryCheck){
-        filteredData = filteredData.filter(sighting => inputArray.includes(sighting.country));
-    }
-    if (shapeCheck){
-        filteredData = filteredData.filter(sighting => inputArray.includes(sighting.shape));
+    else {
+        var filteredData = td;
     }
     
+    // console.log(inputArray);
 
     // var filteredData = td.filter(sighting => sighting.datetime === inputValue);
 
@@ -62,3 +66,13 @@ function runEnter(){
 
 
 };
+
+var table = d3.select("#ufo-table").select("tbody");
+
+table.html("");
+
+table.selectAll("tr")
+.data(td)
+.enter()
+.append("tr")
+.html(d => `<td>${d.datetime}</td><td>${d.city}</td><td>${d.state}</td><td>${d.country}</td><td>${d.shape}</td><td>${d.durationMinutes}</td><td>${d.comments}</td>`);

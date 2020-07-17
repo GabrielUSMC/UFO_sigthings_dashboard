@@ -19,8 +19,14 @@ function runEnter(){
 
     // Get the value property of the input element
     var inputValue = d3.select(".form-control").property("value");
-
-    var filteredData = td.filter(sighting => sighting.datetime === inputValue);
+    
+    if (inputValue) {
+        var filteredData = td.filter(sighting => sighting.datetime === inputValue);
+    }
+    else {
+        var filteredData = td;
+    }
+    
 
     var table = d3.select("#ufo-table").select("tbody");
 
@@ -35,3 +41,13 @@ function runEnter(){
 
 
 };
+
+var table = d3.select("#ufo-table").select("tbody");
+
+table.html("");
+
+table.selectAll("tr")
+.data(td)
+.enter()
+.append("tr")
+.html(d => `<td>${d.datetime}</td><td>${d.city}</td><td>${d.state}</td><td>${d.country}</td><td>${d.shape}</td><td>${d.durationMinutes}</td><td>${d.comments}</td>`);
